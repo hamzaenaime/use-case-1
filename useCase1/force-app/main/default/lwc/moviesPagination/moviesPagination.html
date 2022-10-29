@@ -1,0 +1,26 @@
+<template>
+  <div class="slds-grid slds-grid_align-center slds-var-m-vertical_small">
+    <div class="slds-col">
+      <button
+        class="slds-button slds-button_neutral"
+        onclick={handlePageNumberDescrese}
+        disabled={disablePrevious}
+      >
+        <label>Previous Page</label>
+      </button>
+    </div>
+    <div class="slds-col">
+      <button
+        class="slds-button slds-button_neutral"
+        onclick={handlePageNumberIncrease}
+        disabled={disableNext}
+      >
+        <label>Next Page</label>
+      </button>
+    </div>
+  </div>
+
+  <p style="text-align: center" class="slds-var-m-horizontal_medium">
+    Total Records : {totalItemCount} page ({pageNumber} of {numberOfPages})
+  </p>
+</template>

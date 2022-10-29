@@ -1,0 +1,133 @@
+<template>
+  <div class="slds-grid slds-grid_align-end">
+    <div class="slds-col">
+      <button class="slds-button slds-button_neutral" onclick={onclick}>
+        <label>New Movie</label>
+      </button>
+    </div>
+  </div>
+  <template if:true={showModal}>
+    <section
+      role="dialog"
+      tabindex="-1"
+      aria-modal="true"
+      aria-labelledby="modal-heading-01"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <div class="slds-modal__header">
+          <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+            Create New Movie
+          </h1>
+        </div>
+        <div
+          class="slds-modal__content slds-var-p-around_medium"
+          id="modal-content-id-1"
+        >
+          <!-- Image input -->
+          <lightning-input type="file" label="Attachment" accept="image/png">
+          </lightning-input>
+          <!-- Name input -->
+          <lightning-input
+            label="Name : "
+            name="movieName"
+            placeholder="Enter Movie Name ..."
+            onchange={handleChange}
+            value={movieName}
+            required
+          ></lightning-input>
+          <!-- Movie type input  -->
+          <!-- <template if:true={ActiveValues.data}> -->
+          <lightning-combobox
+            name="movieType"
+            label="Type : "
+            value={movieType}
+            options={picklistValues}
+            onchange={handleChange}
+          >
+          </lightning-combobox>
+          <!-- </template> -->
+          <!-- Description input  -->
+          <lightning-textarea
+            name="movieDescription"
+            label="Description : "
+            value={description}
+            onchange={handleChange}
+          ></lightning-textarea>
+          <label>Actor : </label>
+          <template for:each={actorsList} for:item="actor">
+            <template if:true={actor.addedToMovie}>
+              <div
+                class="slds-grid slds-gutters slds-grid_align-end"
+                key={actor.value}
+              >
+                <div class="slds-col slds-size_8-of-12">
+                  <lightning-input
+                    readonly
+                    name={actor.value}
+                    value={actor.value}
+                  >
+                  </lightning-input>
+                </div>
+                <div class="slds-col slds-size_2-of-12 slds-align-bottom">
+                  <lightning-button
+                    name="Remove actor"
+                    value={actor.value}
+                    label="-"
+                    onclick={handleRemoveActor}
+                  ></lightning-button>
+                </div>
+              </div>
+            </template>
+          </template>
+          <div class="slds-grid slds-gutters slds-grid_align-end">
+            <div class="slds-col slds-size_8-of-12">
+              <lightning-combobox
+                class="myclass"
+                name="movieActor"
+                options={picklistActors}
+                value={movieActor}
+                onchange={handleChange}
+              >
+              </lightning-combobox>
+            </div>
+            <div class="slds-col slds-size_2-of-12 slds-align-bottom">
+              <lightning-button
+                name="Add actor"
+                label="+"
+                onclick={handleAddActor}
+              ></lightning-button>
+            </div>
+          </div>
+          <lightning-input
+            type="Number"
+            name="rating"
+            label="Rating : "
+            value={movieRating}
+            onchange={handleChange}
+            min="0"
+            max="5"
+            message-when-range-overflow="Please enter a correct pincode"
+            message-when-range-underflow="Please enter a correct pincode"
+          ></lightning-input>
+        </div>
+        <div class="slds-modal__footer">
+          <button
+            class="slds-button slds-button_neutral"
+            aria-label="Cancel and close"
+            onclick={onclick}
+          >
+            Cancel
+          </button>
+          <button
+            class="slds-button slds-button_brand"
+            onclick={handleSaveMovie}
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div
+  ></template>
+</template>

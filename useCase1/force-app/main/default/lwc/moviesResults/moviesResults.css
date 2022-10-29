@@ -1,0 +1,11 @@
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  height: 60vh;
+}
+
+c-movie-item {
+  width: 33%;
+  padding: 1rem;
+}

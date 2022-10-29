@@ -1,0 +1,34 @@
+<template>
+  <template if:true={movie}>
+    <div class="slds-box">
+      <div style="text-align: center">
+        <img
+          width="300"
+          src="https://thumbs.dreamstime.com/b/movie-illustration-logo-vector-design-film-178252125.jpg"
+          class="movie"
+          alt="Movie picture"
+        />
+      </div>
+
+      <p>{movie.Name__c}</p>
+      <p>Rating {movie.Rate__c}</p>
+      <p>Type : {movie.Category__c}</p>
+      <p>Description : {movie.Description__c}</p>
+      <div class="slds-grid slds-grid_align-center slds-var-m-top_large">
+        <div class="slds-col">
+          <button class="slds-button slds-button_neutral">
+            <label>Update</label>
+          </button>
+        </div>
+        <div class="slds-col">
+          <button
+            onclick={handleDeleteMovie}
+            class="slds-button slds-button_neutral"
+          >
+            <label>Delete</label>
+          </button>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>

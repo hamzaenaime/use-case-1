@@ -26,8 +26,10 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^26.1.2",
     "husky": "^7.0.4",
+    "install": "0.13.0",
     "lint-staged": "^12.3.7",
-    "prettier": "^2.6.0",
+    "npm": "8.19.2",
+    "prettier": "2.7.1",
     "prettier-plugin-apex": "^1.10.0"
   },
   "lint-staged": {
@@ -37,5 +39,8 @@
     "**/{aura,lwc}/**": [
       "eslint"
     ]
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.2.0"
   }
 }
