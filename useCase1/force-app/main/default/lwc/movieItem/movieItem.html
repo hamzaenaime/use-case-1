@@ -9,6 +9,8 @@
 
     <p>{movie.Name__c}</p>
     <p>Type : {movie.Category__c}</p>
-    <p>Rating : 3/5</p>
+    <template if:true={movie.Rating__c}>
+      <p>Rating : {movie.Rating__c}/5</p>
+    </template>
   </div>
 </template>

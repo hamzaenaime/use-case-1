@@ -11,7 +11,6 @@ import {
 } from "lightning/messageService";
 import RefreshMoviesList from "@salesforce/messageChannel/RefreshMoviesList__c";
 import MoviePreview from "@salesforce/messageChannel/MoviePreview__c";
-
 export default class MoviesResultsLwc extends LightningElement {
   context = createMessageContext();
   @track subscription = null;
@@ -49,21 +48,15 @@ export default class MoviesResultsLwc extends LightningElement {
   moviesPayload;
   pageNumber = 1;
   searchTerm = "";
-  showPagination;
   @wire(getMovies, { pageNumber: "$pageNumber", searchTerm: "$searchTerm" })
   setMovies(payload) {
-    console.log(payload);
     this.moviesPayload = payload;
-    if (payload.data) {
-      this.showPagination = payload.data.totalItemCount > 6;
-    }
     if (payload.error) {
       console.log(payload.error);
     }
   }
 
   handlePreview(event) {
-    const movie = event.target.movie;
-    publish(this.context, MoviePreview, { movie });
+    publish(this.context, MoviePreview, { movie: event.target.movie });
   }
 }

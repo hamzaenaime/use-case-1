@@ -8,7 +8,7 @@ import {
   publish
 } from "lightning/messageService";
 import MoviePreview from "@salesforce/messageChannel/MoviePreview__c";
-import deleteMovies from "@salesforce/apex/MovieController.deleteMovies";
+import deleteMovie from "@salesforce/apex/MovieController.deleteMovie";
 import RefreshMoviesList from "@salesforce/messageChannel/RefreshMoviesList__c";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import DeleteMovieConfirmationModal from "c/deleteMovieConfirmationModal";
@@ -22,8 +22,7 @@ export default class MoviePreviewLwc extends LightningElement {
   disconnectedCallback() {
     this.unsubscribe();
   }
-
-  movie;
+  @track movie;
   handleSubscribe() {
     if (this.subscription) {
       return;
@@ -51,9 +50,7 @@ export default class MoviePreviewLwc extends LightningElement {
       size: "small"
     });
     if (result === "delete") {
-      const movies = Array.of(this.movie);
-
-      deleteMovies({ movies: movies })
+      deleteMovie({ movie: this.movie })
         .then(() => {
           publish(this.context, RefreshMoviesList, {
             searchTerm: ""
@@ -64,8 +61,12 @@ export default class MoviePreviewLwc extends LightningElement {
             variant: "success"
           });
           this.dispatchEvent(event);
+          this.hidePreview();
         })
         .catch((error) => console.log(error));
     }
+  }
+  hidePreview() {
+    this.movie = null;
   }
 }

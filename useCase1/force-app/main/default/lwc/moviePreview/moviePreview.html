@@ -11,14 +11,20 @@
       </div>
 
       <p>{movie.Name__c}</p>
-      <p>Rating {movie.Rate__c}</p>
+      <template if:true={movie.Rating__c}>
+        <p>Rating {movie.Rating__c}</p>
+      </template>
       <p>Type : {movie.Category__c}</p>
-      <p>Description : {movie.Description__c}</p>
+      <template if:true={movie.Description__c}>
+        <p>Rating {movie.Description__c}</p>
+      </template>
+
       <div class="slds-grid slds-grid_align-center slds-var-m-top_large">
         <div class="slds-col">
-          <button class="slds-button slds-button_neutral">
-            <label>Update</label>
-          </button>
+          <c-update-movie
+            movie={movie}
+            onhidepreview={hidePreview}
+          ></c-update-movie>
         </div>
         <div class="slds-col">
           <button

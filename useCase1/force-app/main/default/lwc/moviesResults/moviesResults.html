@@ -4,18 +4,22 @@
       <template for:each={moviesPayload.data.movies} for:item="movie">
         <c-movie-item
           onclick={handlePreview}
-          key={movie.name__c}
+          key={movie.Id}
           movie={movie}
         ></c-movie-item>
       </template>
+      <template if:false={moviesPayload.data.movies}>
+        <div class="slds-align_absolute-center">No movies to display</div>
+      </template>
     </div>
-    <template if:true={showPagination}>
-      <c-movies-pagination
-        page-size={moviesPayload.data.pageSize}
-        total-item-count={moviesPayload.data.totalItemCount}
-      >
-      </c-movies-pagination>
-    </template>
+    <c-movies-pagination
+      page-size={moviesPayload.data.pageSize}
+      total-item-count={moviesPayload.data.totalItemCount}
+    >
+    </c-movies-pagination>
   </template>
-  <template if:false={moviesPayload.data}>Loading</template>
+  <template if:false={moviesPayload.data}>
+    <lightning-spinner alternative-text="alternativeText" size="big">
+    </lightning-spinner>
+  </template>
 </template>

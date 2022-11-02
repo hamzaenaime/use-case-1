@@ -28,12 +28,7 @@
         <name>Layout</name>
     </types>
     <types>
-        <members>filterMovies</members>
-        <members>movieItem</members>
-        <members>moviePreview</members>
-        <members>moviesManagementContainer</members>
-        <members>moviesResults</members>
-        <members>newMovieModal</members>
+        <members>*</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
