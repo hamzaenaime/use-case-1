@@ -18,7 +18,7 @@ export default class MoviesResultsLwc extends LightningElement {
     this.handleSubscribe();
   }
   disconnectedCallback() {
-    this.unsubscribe();
+    this.handleUnsubscribe();
   }
   handleSubscribe() {
     if (this.subscription) {

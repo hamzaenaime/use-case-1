@@ -20,7 +20,7 @@ export default class MoviePreviewLwc extends LightningElement {
     this.handleSubscribe();
   }
   disconnectedCallback() {
-    this.unsubscribe();
+    this.handleUnsubscribe();
   }
   @track movie;
   handleSubscribe() {
@@ -55,15 +55,24 @@ export default class MoviePreviewLwc extends LightningElement {
           publish(this.context, RefreshMoviesList, {
             searchTerm: ""
           });
-          const event = new ShowToastEvent({
-            title: "Success!",
-            message: "The movie has been deleted",
-            variant: "success"
-          });
-          this.dispatchEvent(event);
+          this.dispatchEvent(
+            new ShowToastEvent({
+              title: "Success!",
+              message: "The movie has been deleted",
+              variant: "success"
+            })
+          );
           this.hidePreview();
         })
-        .catch((error) => console.log(error));
+        .catch((error) =>
+          this.dispatchEvent(
+            new ShowToastEvent({
+              title: "Success!",
+              message: "The movie has been deleted " + error,
+              variant: "error"
+            })
+          )
+        );
     }
   }
   hidePreview() {

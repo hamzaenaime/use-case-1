@@ -1,90 +1,103 @@
 <template>
   <lightning-modal-header label={label}></lightning-modal-header>
   <lightning-modal-body>
-    <div
-      class="slds-modal__content slds-var-p-around_medium"
-      id="modal-content-id-1"
-    >
-      <lightning-input
-        label="Name : "
-        name="movieName"
-        placeholder="Enter Movie Name ..."
-        onchange={handleChange}
-        value={movieFields.movieName}
-        required
-      ></lightning-input>
-      <lightning-combobox
-        name="movieType"
-        label="Type : "
-        value={movieFields.movieType}
-        options={movieCategories}
-        onchange={handleChange}
-        required
+    <template if:true={loading}>
+      <lightning-spinner alternative-text="alternativeText" size="small">
+      </lightning-spinner>
+    </template>
+    <template if:false={loading}>
+      <div
+        class="slds-modal__content slds-var-p-around_medium"
+        id="modal-content-id-1"
       >
-      </lightning-combobox>
-      <lightning-textarea
-        name="movieDescription"
-        label="Description : "
-        value={movieFields.movieDescription}
-        onchange={handleChange}
-      ></lightning-textarea>
-      <label>Actor : </label>
-      <template for:each={actorsList} for:item="actor">
-        <template if:true={actor.addedToMovie}>
-          <div
-            class="slds-grid slds-gutters slds-grid_align-end"
-            key={actor.value}
-          >
-            <div class="slds-col slds-size_8-of-12">
-              <lightning-input readonly name={actor.label} value={actor.label}>
-              </lightning-input>
+        <lightning-input
+          label="Name : "
+          name="movieName"
+          placeholder="Enter Movie Name ..."
+          onchange={handleChange}
+          value={movieFields.movieName}
+          class="validate"
+          required
+        ></lightning-input>
+        <lightning-combobox
+          name="movieType"
+          label="Type : "
+          value={movieFields.movieType}
+          options={movieCategories}
+          onchange={handleChange}
+          class="validate"
+          required
+        >
+        </lightning-combobox>
+        <lightning-textarea
+          name="movieDescription"
+          label="Description : "
+          value={movieFields.movieDescription}
+          onchange={handleChange}
+        ></lightning-textarea>
+        <label>Actor : </label>
+        <template for:each={actorsList} for:item="actor">
+          <template if:true={actor.addedToMovie}>
+            <div
+              class="slds-grid slds-gutters slds-grid_align-end"
+              key={actor.value}
+            >
+              <div class="slds-col slds-size_8-of-12">
+                <lightning-input
+                  readonly
+                  name={actor.label}
+                  value={actor.label}
+                >
+                </lightning-input>
+              </div>
+              <div class="slds-col slds-size_2-of-12 slds-align-bottom">
+                <lightning-button
+                  name="Remove actor"
+                  value={actor.value}
+                  label="-"
+                  onclick={handleRemoveActor}
+                ></lightning-button>
+              </div>
             </div>
-            <div class="slds-col slds-size_2-of-12 slds-align-bottom">
-              <lightning-button
-                name="Remove actor"
-                value={actor.value}
-                label="-"
-                onclick={handleRemoveActor}
-              ></lightning-button>
-            </div>
-          </div>
+          </template>
         </template>
-      </template>
-      <div class="slds-grid slds-gutters slds-grid_align-end">
-        <div class="slds-col slds-size_8-of-12">
-          <lightning-combobox
-            class="myclass"
-            name="movieActor"
-            options={actorsPicklistValues}
-            value={movieActor}
-            onchange={handleChange}
-          >
-          </lightning-combobox>
+        <div class="slds-grid slds-gutters slds-grid_align-end">
+          <div class="slds-col slds-size_8-of-12">
+            <lightning-combobox
+              class="myclass"
+              name="movieActor"
+              options={actorsPicklistValues}
+              value={movieActor}
+              onchange={handleChange}
+            >
+            </lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_2-of-12 slds-align-bottom">
+            <lightning-button
+              name="Add actor"
+              label="+"
+              onclick={handleAddActor}
+            ></lightning-button>
+          </div>
         </div>
-        <div class="slds-col slds-size_2-of-12 slds-align-bottom">
-          <lightning-button
-            name="Add actor"
-            label="+"
-            onclick={handleAddActor}
-          ></lightning-button>
-        </div>
+        <lightning-input
+          type="Number"
+          name="movieRating"
+          label="Rating : "
+          value={movieFields.movieRating}
+          onchange={handleChange}
+          min="0"
+          max="5"
+          message-when-range-overflow="Please enter a rating between 0 and 5"
+          message-when-range-underflow="Please enter a rating between 0 and 5"
+        ></lightning-input>
       </div>
-      <lightning-input
-        type="Number"
-        name="movieRating"
-        label="Rating : "
-        value={movieFields.movieRating}
-        onchange={handleChange}
-        min="0"
-        max="5"
-        message-when-range-overflow="Please enter a rating between 0 and 5"
-        message-when-range-underflow="Please enter a rating between 0 and 5"
-      ></lightning-input>
-    </div>
+    </template>
   </lightning-modal-body>
   <lightning-modal-footer>
     <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
     <lightning-button
+      variant="brand"
       label={actionType}
       onclick={handleAction}
     ></lightning-button>

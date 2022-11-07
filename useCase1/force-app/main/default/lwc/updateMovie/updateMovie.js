@@ -3,12 +3,12 @@ import { createMessageContext, publish } from "lightning/messageService";
 import updateMovie from "@salesforce/apex/MovieController.updateMovie";
 import RefreshMoviesList from "@salesforce/messageChannel/refreshMoviesList__c";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import getActorsByMovieId from "@salesforce/apex/ActorsController.getActorsByMovieId";
+import getActorNamesByMovieId from "@salesforce/apex/ActorsController.getActorNamesByMovieId";
 import MovieModal from "c/movieModal";
 export default class UpdateMovie extends LightningElement {
   movieActors;
   async handleDispalyModal() {
-    await getActorsByMovieId({ movieId: this.movie.Id })
+    await getActorNamesByMovieId({ movieId: this.movie.Id })
       .then((data) => {
         this.movieActors = data.map((movieActor) => movieActor.Actor__c);
         MovieModal.open({

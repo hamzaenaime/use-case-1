@@ -4,7 +4,7 @@ public with sharing class ActorsController {
     try {
       SObjectAccessDecision decision = Security.stripInaccessible(
         AccessType.READABLE,
-        [SELECT ID, NAME FROM Actor__c WITH SECURITY_ENFORCED]
+        [SELECT ID, NAME FROM Actor__c]
       );
       return decision.getRecords();
     } catch (Exception e) {
@@ -13,7 +13,7 @@ public with sharing class ActorsController {
   }
 
   @AuraEnabled
-  public static List<MovieActor__c> getActorsByMovieId(Id movieId) {
+  public static List<MovieActor__c> getActorNamesByMovieId(Id movieId) {
     try {
       SObjectAccessDecision decision = Security.stripInaccessible(
         AccessType.READABLE,

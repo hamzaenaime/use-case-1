@@ -9,13 +9,11 @@ import LightningModal from "lightning/modal";
 export default class MovieModal extends LightningModal {
   context = createMessageContext();
   @wire(getObjectInfo, { objectApiName: Movie__c }) movieMetaData;
-
   @api handleSaveMovie;
   @api handleUpdateMovie;
   @api movie;
   @api movieActors;
   @api actionType;
-
   movieCategories;
   @wire(
     getPicklistValues,
@@ -99,38 +97,42 @@ export default class MovieModal extends LightningModal {
   }
   loading = false;
   handleSave() {
-    this.loading = true;
-    const actorIds = this.actorsList
-      .filter((actor) => actor.addedToMovie === true)
-      .map((actor) => actor.Id);
-    const insertedMovie = {
-      movie: {
-        Name__c: this.movieFields.movieName,
-        Category__c: this.movieFields.movieType,
-        Description__c: this.movieFields.movieDescription,
-        Rating__c: this.movieFields.movieRating
-      },
-      actorIds: actorIds
-    };
-    this.handleSaveMovie(this, insertedMovie);
+    if (this.isInputValid()) {
+      this.loading = true;
+      const actorIds = this.actorsList
+        .filter((actor) => actor.addedToMovie === true)
+        .map((actor) => actor.Id);
+      const insertedMovie = {
+        movie: {
+          Name__c: this.movieFields.movieName,
+          Category__c: this.movieFields.movieType,
+          Description__c: this.movieFields.movieDescription,
+          Rating__c: this.movieFields.movieRating
+        },
+        actorIds: actorIds
+      };
+      this.handleSaveMovie(this, insertedMovie);
+    }
   }
 
   handleUpdate() {
-    this.loading = true;
-    const actorIds = this.actorsList
-      .filter((actor) => actor.addedToMovie === true)
-      .map((actor) => actor.Id);
-    const updatedMovie = {
-      movie: {
-        Id: this.movieFields.Id,
-        Name__c: this.movieFields.movieName,
-        Category__c: this.movieFields.movieType,
-        Description__c: this.movieFields.movieDescription,
-        Rating__c: this.movieFields.movieRating
-      },
-      actorIds: actorIds
-    };
-    this.handleUpdateMovie(this, updatedMovie);
+    if (this.isInputValid()) {
+      this.loading = true;
+      const actorIds = this.actorsList
+        .filter((actor) => actor.addedToMovie === true)
+        .map((actor) => actor.Id);
+      const updatedMovie = {
+        movie: {
+          Id: this.movieFields.Id,
+          Name__c: this.movieFields.movieName,
+          Category__c: this.movieFields.movieType,
+          Description__c: this.movieFields.movieDescription,
+          Rating__c: this.movieFields.movieRating
+        },
+        actorIds: actorIds
+      };
+      this.handleUpdateMovie(this, updatedMovie);
+    }
   }
 
   handleCancel() {
@@ -142,6 +144,19 @@ export default class MovieModal extends LightningModal {
     } else if (this.actionType === "Update") {
       this.handleUpdate();
     }
+  }
+
+  isInputValid() {
+    const areInputsValid = [];
+    this.template.querySelectorAll(".validate").forEach((inputField) => {
+      if (!inputField.checkValidity()) {
+        inputField.reportValidity();
+        areInputsValid.push(false);
+      } else {
+        areInputsValid.push(true);
+      }
+    });
+    return areInputsValid.every(Boolean);
   }
 
   @track documentId;

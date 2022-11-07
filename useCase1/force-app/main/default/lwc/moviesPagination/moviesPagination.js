@@ -43,7 +43,7 @@ export default class MoviesPagination extends LightningElement {
     this.handleSubscribe();
   }
   disconnectedCallback() {
-    this.unsubscribe();
+    this.handleUnsubscribe();
   }
   handleSubscribe() {
     if (this.subscription) {

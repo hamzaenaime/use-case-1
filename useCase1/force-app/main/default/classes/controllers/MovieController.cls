@@ -5,18 +5,24 @@ public with sharing class MovieController {
   public static void createMovie(Movie__c movie, List<Id> actorIds) {
     List<MovieActor__c> movieActors = new List<MovieActor__c>();
     try {
-      insert movie;
+      SObjectAccessDecision movieDecision = Security.stripInaccessible(
+        AccessType.CREATABLE,
+        new List<Movie__c>{ movie }
+      );
+      insert movieDecision.getRecords();
+      Id movieId = movieDecision.getRecords().get(0).Id;
       for (Id actorId : actorIds) {
         MovieActor__c movieActor = new MovieActor__c();
         movieActor.Actor__c = actorId;
-        movieActor.Movie__c = movie.Id;
+        movieActor.Movie__c = movieId;
+        movieActor.key__c = actorId + '' + movieId;
         movieActors.add(movieActor);
       }
-      SObjectAccessDecision decision = Security.stripInaccessible(
+      SObjectAccessDecision movieActorDecision = Security.stripInaccessible(
         AccessType.CREATABLE,
         movieActors
       );
-      insert decision.getRecords();
+      insert movieActorDecision.getRecords();
     } catch (Exception e) {
       throw new AuraHandledException(e.getMessage());
     }
@@ -25,29 +31,27 @@ public with sharing class MovieController {
   @AuraEnabled
   public static void updateMovie(Movie__c movie, List<Id> actorIds) {
     List<MovieActor__c> movieActors = new List<MovieActor__c>();
-    List<MovieActor__c> deletedMovieActors = [
-      SELECT Actor__c
-      FROM MovieActor__c
-      WHERE Movie__c = :movie.Id AND Actor__c NOT IN :actorIds
-    ];
     try {
-      delete deletedMovieActors;
       update movie;
+      handleRemovedActor(movie.Id, actorIds);
       for (Id actorId : actorIds) {
         MovieActor__c movieActor = new MovieActor__c();
         movieActor.Actor__c = actorId;
         movieActor.Movie__c = movie.Id;
+        movieActor.key__c = actorId + '' + movie.Id;
         movieActors.add(movieActor);
       }
-      upsert movieActors;
-      // SObjectAccessDecision decision = Security.stripInaccessible(
-      //   AccessType.UPSERTABLE,
-      //   movieActors
-      // );
-      // upsert decision.getRecords();
+      upsert movieActors key__c;
     } catch (Exception e) {
       throw new AuraHandledException(e.getMessage());
     }
+  }
+  private static void handleRemovedActor(Id movieId, List<Id> actorIds) {
+    delete [
+      SELECT Actor__c
+      FROM MovieActor__c
+      WHERE Movie__c = :movieId AND Actor__c NOT IN :actorIds
+    ];
   }
 
   @AuraEnabled(Cacheable=true)
@@ -58,17 +62,13 @@ public with sharing class MovieController {
     query += ' WHERE name__c like :movieNameQueryParam';
     query += ' ORDER BY CreatedDate DESC';
     query += ' LIMIT :PAGE_SIZE OFFSET :offset';
-    try {
-      MovieDTO result = new MovieDTO();
-      result.totalItemCount = Database.countQuery(
-        'SELECT count() FROM Movie__c WHERE name__c like :movieNameQueryParam'
-      );
-      result.pageSize = PAGE_SIZE;
-      result.movies = Database.query(query);
-      return result;
-    } catch (Exception e) {
-      throw new AuraHandledException(e.getMessage());
-    }
+    MovieDTO result = new MovieDTO();
+    result.totalItemCount = Database.countQuery(
+      'SELECT count() FROM Movie__c WHERE name__c like :movieNameQueryParam'
+    );
+    result.pageSize = PAGE_SIZE;
+    result.movies = Database.query(query);
+    return result;
   }
 
   @AuraEnabled
