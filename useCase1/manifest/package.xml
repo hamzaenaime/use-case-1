@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Actor__c.Gender__c</members>
+        <members>Actor__c.Name__c</members>
+        <members>Actor__c.Number_of_movies__c</members>
+        <members>MovieActor__c.Actor__c</members>
+        <members>MovieActor__c.Movie__c</members>
+        <members>Movie__c.Category__c</members>
+        <members>Movie__c.Description__c</members>
+        <members>Movie__c.FemaleActorsPercentage__c</members>
+        <members>Movie__c.IsReleased__c</members>
+        <members>Movie__c.MaleActorsPercentage__c</members>
+        <members>Movie__c.Name__c</members>
+        <members>Movie__c.Release_date__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Actor__c</members>
+        <members>MovieActor__c</members>
+        <members>Movie__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Actor__c-Actor Layout</members>
+        <members>MovieActor__c-MovieActor Layout</members>
+        <members>Movie__c-Movie Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>Admin</members>
+        <name>Profile</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>LightningMessageChannel</name>
+    </types>
+    <version>53.0</version>
+</Package>

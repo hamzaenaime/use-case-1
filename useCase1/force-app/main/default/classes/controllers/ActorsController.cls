@@ -1,0 +1,31 @@
+public with sharing class ActorsController {
+  @AuraEnabled(Cacheable=true)
+  public static Actor__c[] getActors() {
+    try {
+      SObjectAccessDecision decision = Security.stripInaccessible(
+        AccessType.READABLE,
+        [SELECT ID, NAME FROM Actor__c]
+      );
+      return decision.getRecords();
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+
+  @AuraEnabled
+  public static List<MovieActor__c> getActorNamesByMovieId(Id movieId) {
+    try {
+      SObjectAccessDecision decision = Security.stripInaccessible(
+        AccessType.READABLE,
+        [
+          SELECT Actor__r.Name
+          FROM MovieActor__c
+          WHERE Movie__c = :movieId
+        ]
+      );
+      return decision.getRecords();
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+}

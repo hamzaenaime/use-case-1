@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >This is message channel to refresh movies list when adding/updating movies</description>
+    <isExposed>true</isExposed>
+    <masterLabel>RefreshMoviesList</masterLabel>
+</LightningMessageChannel>
