@@ -5,6 +5,8 @@ import RefreshMoviesList from "@salesforce/messageChannel/refreshMoviesList__c";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import getActorNamesByMovieId from "@salesforce/apex/ActorsController.getActorNamesByMovieId";
 import MovieModal from "c/movieModal";
+import MoviePreview from "@salesforce/messageChannel/MoviePreview__c";
+
 export default class UpdateMovie extends LightningElement {
   movieActors;
   async handleDispalyModal() {
@@ -33,9 +35,9 @@ export default class UpdateMovie extends LightningElement {
           message: "The movie has been updated",
           variant: "success"
         });
-        this.dispatchEvent(new CustomEvent("hidepreview"));
         this.dispatchEvent(toastEvent);
         modal.close();
+        publish(this.context, MoviePreview, { hidePreview: true });
       })
       .catch((error) => console.log(error));
   }
