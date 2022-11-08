@@ -2,24 +2,41 @@
   <template if:true={movie}>
     <div class="slds-box">
       <div style="text-align: center">
-        <img
-          width="300"
-          src="https://thumbs.dreamstime.com/b/movie-illustration-logo-vector-design-film-178252125.jpg"
-          class="movie"
-          alt="Movie picture"
-        />
+        <template if:true={loading}>
+          <lightning-spinner alternative-text="alternativeText" size="small">
+          </lightning-spinner>
+        </template>
+        <template if:false={loading}>
+          <template if:true={url}
+            ><img src={url} class="movie" alt="Movie picture" />
+          </template>
+          <template if:false={url}>
+            <img
+              src="https://thumbs.dreamstime.com/b/movie-illustration-logo-vector-design-film-178252125.jpg"
+              class="movie"
+              alt="Movie picture"
+            /> </template
+        ></template>
       </div>
 
       <p>{movie.Name__c}</p>
       <template if:true={movie.Rating__c}>
-        <p>Rating {movie.Rating__c}</p>
+        <p>Description : {movie.Description__c}</p>
       </template>
       <p>Type : {movie.Category__c}</p>
       <template if:true={movie.Description__c}>
-        <p>Rating {movie.Description__c}</p>
+        <p>Rating : {movie.Rating__c}/5</p>
       </template>
 
       <div class="slds-grid slds-grid_align-center slds-var-m-top_large">
+        <div class="slds-col">
+          <lightning-button
+            variant="Neutral"
+            label="Change Image"
+            onclick={handleChangeImage}
+          >
+          </lightning-button>
+        </div>
         <div class="slds-col">
           <c-update-movie
             movie={movie}
@@ -27,12 +44,12 @@
           ></c-update-movie>
         </div>
         <div class="slds-col">
-          <button
+          <lightning-button
+            variant="Destructive"
+            label="Delete"
             onclick={handleDeleteMovie}
-            class="slds-button slds-button_neutral"
           >
-            <label>Delete</label>
-          </button>
+          </lightning-button>
         </div>
       </div>
     </div>

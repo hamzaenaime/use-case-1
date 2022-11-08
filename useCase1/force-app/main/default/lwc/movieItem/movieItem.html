@@ -1,11 +1,20 @@
 <template>
-  <div class="slds-box" style="cursor: pointer">
-    <img
-      width="250"
-      src="https://thumbs.dreamstime.com/b/movie-illustration-logo-vector-design-film-178252125.jpg"
-      class="movie"
-      alt="Movie picture"
-    />
+  <div class="slds-box" style="cursor: pointer; text-align: center">
+    <template if:true={loading}>
+      <lightning-spinner alternative-text="alternativeText" size="small">
+      </lightning-spinner>
+    </template>
+    <template if:false={loading}>
+      <template if:true={url}
+        ><img src={url} class="movie" alt="Movie picture" />
+      </template>
+      <template if:false={url}>
+        <img
+          src="https://thumbs.dreamstime.com/b/movie-illustration-logo-vector-design-film-178252125.jpg"
+          class="movie"
+          alt="Movie picture"
+        /> </template
+    ></template>
 
     <p>{movie.Name__c}</p>
     <p>Type : {movie.Category__c}</p>

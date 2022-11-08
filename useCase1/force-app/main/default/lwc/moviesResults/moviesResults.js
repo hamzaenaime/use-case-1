@@ -28,6 +28,7 @@ export default class MoviesResultsLwc extends LightningElement {
       this.context,
       RefreshMoviesList,
       (message) => {
+        console.log("from upload");
         if (message.searchTerm !== undefined) {
           this.searchTerm = message.searchTerm;
         }

@@ -8,4 +8,5 @@
 c-movie-item {
   width: 33%;
   padding: 1rem;
+  align-content: start;
 }
